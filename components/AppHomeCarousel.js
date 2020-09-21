@@ -1,6 +1,6 @@
 import Carousel from "react-native-snap-carousel";
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import React from "react";
+import { View, Text, Dimensions } from "react-native";
 
 const _t = ({ item, index }) => {
   return (
@@ -17,6 +17,7 @@ const _t = ({ item, index }) => {
     >
       <Text style={{ fontSize: 30, color: "white" }}>{item.title}</Text>
       <Text style={{ fontSize: 15, color: "white" }}>{item.text}</Text>
+      <Text style={{ fontSize: 15, color: "white" }}>{index}</Text>
     </View>
   );
 };
@@ -48,21 +49,15 @@ const deviceWidth = Dimensions.get("window").width;
 
 export default function AppHomeCarousel() {
   return (
-    <View style={styles.container}>
+    <View>
       <Carousel
         layout={"default"}
         loop={true}
         renderItem={_t}
         data={car}
-        itemWidth={200}
+        itemWidth={deviceWidth * 0.75}
         sliderWidth={deviceWidth}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
