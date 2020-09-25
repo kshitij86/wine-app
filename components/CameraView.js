@@ -1,7 +1,13 @@
 import { Camera } from "expo-camera";
 import * as Permissions from "expo-permissions";
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, Alert } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import {
   FontAwesome,
   Ionicons,
@@ -15,6 +21,7 @@ export default class CameraView extends Component {
   state = {
     hasPermission: null,
     cameraType: Camera.Constants.Type.front,
+    loading: false,
   };
 
   async componentDidMount() {
@@ -50,7 +57,9 @@ export default class CameraView extends Component {
   // Take a photo
   takePicture = async () => {
     if (this.camera) {
+      this.setState({ loading: true });
       let photo = await this.camera.takePictureAsync();
+      this.setState({ loading: false });
       Alert.alert("zed", photo.uri);
     }
   };
@@ -79,6 +88,16 @@ export default class CameraView extends Component {
               this.camera = ref;
             }}
           >
+            <ActivityIndicator
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignContent: "center",
+              }}
+              size={50}
+              animating={this.state.loading}
+              color="#fff"
+            />
             <View
               opacity={0.5}
               style={{
