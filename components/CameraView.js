@@ -1,12 +1,13 @@
 import { Camera } from "expo-camera";
 import * as Permissions from "expo-permissions";
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, Alert } from "react-native";
 import {
   FontAwesome,
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 // TODO: Hide status bar in camera view
 
@@ -17,19 +18,49 @@ export default class CameraView extends Component {
   };
 
   async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasPermission: status === "granted" });
+    this.getPermissionAsync();
   }
 
+  /* ----- Handlers ----- */
+
+  getPermissionAsync = async () => {
+    // Camera roll Permission
+    if (Platform.OS === "ios") {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make this work!");
+      }
+    }
+    // Camera Permission
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasPermission: status === "granted" });
+  };
+
+  // Switch front/back camera
   handleCameraType = () => {
     const { cameraType } = this.state;
-
     this.setState({
       cameraType:
         cameraType === Camera.Constants.Type.front
           ? Camera.Constants.Type.back
           : Camera.Constants.Type.front,
     });
+  };
+
+  // Take a photo
+  takePicture = async () => {
+    if (this.camera) {
+      let photo = await this.camera.takePictureAsync();
+      Alert.alert("zed", photo.uri);
+    }
+  };
+
+  // Pick an image
+  pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    });
+    Alert.alert("zed", result.uri);
   };
 
   render() {
@@ -44,6 +75,9 @@ export default class CameraView extends Component {
           <Camera
             style={{ flex: 1, alignContent: "flex-end" }}
             type={this.state.cameraType}
+            ref={(ref) => {
+              this.camera = ref;
+            }}
           >
             <View
               opacity={0.5}
@@ -61,6 +95,9 @@ export default class CameraView extends Component {
                   alignItems: "center",
                   backgroundColor: "transparent",
                 }}
+                onPress={() => {
+                  this.pickImage();
+                }}
               >
                 <Ionicons
                   name="ios-photos"
@@ -72,6 +109,9 @@ export default class CameraView extends Component {
                   alignSelf: "flex-end",
                   alignItems: "center",
                   backgroundColor: "transparent",
+                }}
+                onPress={() => {
+                  this.takePicture();
                 }}
               >
                 <FontAwesome
