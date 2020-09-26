@@ -12,16 +12,19 @@ import {
   FontAwesome,
   Ionicons,
   MaterialCommunityIcons,
+  Foundation,
 } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
 // TODO: Hide status bar in camera view
+// TODO: Make video record only 6 seconds and autoclose
 
 export default class CameraView extends Component {
   state = {
     hasPermission: null,
     cameraType: Camera.Constants.Type.front,
     loading: false,
+    recording: false,
   };
 
   async componentDidMount() {
@@ -31,15 +34,16 @@ export default class CameraView extends Component {
   /* ----- Handlers ----- */
 
   getPermissionAsync = async () => {
-    // Camera roll Permission
-    if (Platform.OS === "ios") {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== "granted") {
-        alert("Sorry, we need camera roll permissions to make this work!");
-      }
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const { aStatus } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+    const { cStatus } = await Permissions.askAsync(Permissions.CAMERA);
+    if (
+      status !== "granted" ||
+      aStatus !== "granted" ||
+      cStatus !== "granted"
+    ) {
+      console.log("Some permission not granted !");
     }
-    // Camera Permission
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasPermission: status === "granted" });
   };
 
@@ -65,11 +69,15 @@ export default class CameraView extends Component {
   };
 
   // Pick an image
-  pickImage = async () => {
+  pickVideo = async () => {
+    this.setState({ loading: true });
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
     });
-    Alert.alert("zed", result.uri);
+    this.setState({ loading: false });
+    if (result.uri !== "") {
+      Alert.alert("zed", result.uri);
+    }
   };
 
   render() {
@@ -108,51 +116,101 @@ export default class CameraView extends Component {
                 backgroundColor: "transparent",
               }}
             >
+              {this.state.recording ? (
+                <TouchableOpacity
+                  style={{
+                    alignSelf: "flex-end",
+                    alignItems: "center",
+                    backgroundColor: "transparent",
+                  }}
+                  disabled={true}
+                >
+                  <Ionicons
+                    name="ios-photos"
+                    style={{ color: "#fff", fontSize: 40 }}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    alignSelf: "flex-end",
+                    alignItems: "center",
+                    backgroundColor: "transparent",
+                  }}
+                  onPress={() => {
+                    this.pickVideo();
+                  }}
+                >
+                  <Ionicons
+                    name="ios-photos"
+                    style={{ color: "#fff", fontSize: 40 }}
+                  />
+                </TouchableOpacity>
+              )}
               <TouchableOpacity
                 style={{
                   alignSelf: "flex-end",
                   alignItems: "center",
                   backgroundColor: "transparent",
                 }}
-                onPress={() => {
-                  this.pickImage();
+                onPress={async () => {
+                  if (!this.state.recording) {
+                    this.setState({ recording: true });
+                    let video = await this.camera.recordAsync({
+                      quality: "1080p",
+                      maxDuration: 6,
+                    });
+                    console.log(video);
+                  } else {
+                    this.setState({ recording: false });
+                    await this.camera.stopRecording();
+                  }
                 }}
               >
-                <Ionicons
-                  name="ios-photos"
-                  style={{ color: "#fff", fontSize: 40 }}
-                />
+                {this.state.recording === true ? (
+                  <FontAwesome
+                    name="stop"
+                    style={{ color: "#fff", fontSize: 40 }}
+                  />
+                ) : (
+                  <Foundation
+                    name="record"
+                    style={{ color: "#fff", fontSize: 60 }}
+                  />
+                )}
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  alignSelf: "flex-end",
-                  alignItems: "center",
-                  backgroundColor: "transparent",
-                }}
-                onPress={() => {
-                  this.takePicture();
-                }}
-              >
-                <FontAwesome
-                  name="camera"
-                  style={{ color: "#fff", fontSize: 40 }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  alignSelf: "flex-end",
-                  alignItems: "center",
-                  backgroundColor: "transparent",
-                }}
-                onPress={() => {
-                  this.handleCameraType();
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="camera-switch"
-                  style={{ color: "#fff", fontSize: 40 }}
-                />
-              </TouchableOpacity>
+
+              {this.state.recording ? (
+                <TouchableOpacity
+                  style={{
+                    alignSelf: "flex-end",
+                    alignItems: "center",
+                    backgroundColor: "transparent",
+                  }}
+                  disabled={true}
+                >
+                  <MaterialCommunityIcons
+                    name="camera-switch"
+                    style={{ color: "#fff", fontSize: 40 }}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    alignSelf: "flex-end",
+                    alignItems: "center",
+                    backgroundColor: "transparent",
+                  }}
+                  onPress={() => {
+                    this.handleCameraType();
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="camera-switch"
+                    style={{ color: "#fff", fontSize: 40 }}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
           </Camera>
         </View>
