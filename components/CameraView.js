@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  StatusBar,
+  Button,
 } from "react-native";
 import {
   FontAwesome,
@@ -25,6 +27,7 @@ export default class CameraView extends Component {
     cameraType: Camera.Constants.Type.front,
     loading: false,
     recording: false,
+    recordDone: false,
   };
 
   async componentDidMount() {
@@ -89,6 +92,7 @@ export default class CameraView extends Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
+          <StatusBar hidden={true} />
           <Camera
             style={{ flex: 1, alignContent: "flex-end" }}
             type={this.state.cameraType}
@@ -96,6 +100,10 @@ export default class CameraView extends Component {
               this.camera = ref;
             }}
           >
+            <Button
+              title="Go to preview"
+              onPress={() => this.props.navigation.navigate("videoPreview")}
+            />
             <ActivityIndicator
               style={{
                 flex: 1,
@@ -158,7 +166,6 @@ export default class CameraView extends Component {
                     this.setState({ recording: true });
                     let video = await this.camera.recordAsync({
                       quality: "1080p",
-                      maxDuration: 6,
                     });
                     console.log(video);
                   } else {

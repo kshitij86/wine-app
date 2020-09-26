@@ -1,7 +1,7 @@
 import React from "react";
 
-import CameraView from "./components/CameraView";
+import AppHome from "./components/AppHome";
 
 export default function App() {
-  return <CameraView />;
+  return <AppHome />;
 }
