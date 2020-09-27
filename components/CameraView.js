@@ -22,6 +22,7 @@ import * as ImagePicker from "expo-image-picker";
 // TODO: Make video record only 6 seconds and autoclose
 
 export default class CameraView extends Component {
+  video = null;
   state = {
     hasPermission: null,
     cameraType: Camera.Constants.Type.front,
@@ -100,10 +101,10 @@ export default class CameraView extends Component {
               this.camera = ref;
             }}
           >
-            <Button
+            {/* <Button
               title="Go to preview"
               onPress={() => this.props.navigation.navigate("videoPreview")}
-            />
+            /> */}
             <ActivityIndicator
               style={{
                 flex: 1,
@@ -164,13 +165,14 @@ export default class CameraView extends Component {
                 onPress={async () => {
                   if (!this.state.recording) {
                     this.setState({ recording: true });
-                    let video = await this.camera.recordAsync({
+                    this.video = await this.camera.recordAsync({
                       quality: "1080p",
                     });
-                    console.log(video);
                   } else {
                     this.setState({ recording: false });
                     await this.camera.stopRecording();
+                    console.log(this.video);
+                    this.props.navigation.navigate("videoPreview");
                   }
                 }}
               >
