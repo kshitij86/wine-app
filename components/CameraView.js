@@ -17,6 +17,7 @@ import {
 } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import { APPTHEME_COLOR } from "../assets/globals/styles";
 
 // TODO: Hide status bar in camera view
 // TODO: Make video record only 6 seconds and autoclose
@@ -25,7 +26,7 @@ export default class CameraView extends Component {
   video = null;
   state = {
     hasPermission: null,
-    cameraType: Camera.Constants.Type.front,
+    cameraType: Camera.Constants.Type.back,
     loading: false,
     recording: false,
     recordDone: false,
@@ -66,6 +67,8 @@ export default class CameraView extends Component {
     }
   };
 
+  /*    return recording ? this.stopRecording() : this.startRecording(); */
+
   startRecording = async () => {
     if (!this.camera) return;
 
@@ -95,8 +98,12 @@ export default class CameraView extends Component {
 
   toggleRecording() {
     const { recording } = this.state;
-
-    return recording ? this.stopRecording() : this.startRecording();
+    if (!recording) {
+      this.startRecording();
+      setTimeout(() => {
+        this.stopRecording();
+      }, 6000);
+    }
   }
 
   // Pick an image
@@ -120,7 +127,7 @@ export default class CameraView extends Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <StatusBar hidden={true} />
+          <StatusBar backgroundColor={APPTHEME_COLOR} hidden={false} />
           <Camera
             style={{ flex: 1, alignContent: "flex-end" }}
             type={this.state.cameraType}
@@ -128,10 +135,6 @@ export default class CameraView extends Component {
               this.camera = ref;
             }}
           >
-            {/* <Button
-              title="Go to preview"
-              onPress={() => this.props.navigation.navigate("videoPreview")}
-            /> */}
             <ActivityIndicator
               style={{
                 flex: 1,
@@ -142,6 +145,8 @@ export default class CameraView extends Component {
               animating={this.state.loading}
               color="#fff"
             />
+            {/* Fucked up LottieView, remove*/}
+            {/* {this.state.recording === true ? <TimerAnim /> : null} */}
             <View
               opacity={0.5}
               style={{

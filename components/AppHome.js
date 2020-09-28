@@ -2,21 +2,21 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
+import { APPTHEME_COLOR, APPTEXT_COLOR } from "../assets/globals/styles";
 import CameraView from "./CameraView";
 import VideoPreview from "./VideoPreview";
+import HeaderTransparentLogo from "./HeaderTransparentLogo";
 
 const Stack = createStackNavigator();
 const StackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="camera"
+        name="cameraView"
         component={CameraView}
         options={{
-          title: "zed",
-          headerStyle: {
-            backgroundColor: "transparent",
-          },
+          headerTitle: () => <HeaderTransparentLogo />,
+          headerStyle: { backgroundColor: APPTHEME_COLOR },
         }}
       />
       <Stack.Screen
@@ -25,9 +25,10 @@ const StackNavigator = () => {
         options={{
           title: "Preview",
           headerStyle: {
-            opacity: 0.5,
-            backgroundColor: "transparent",
+            backgroundColor: APPTHEME_COLOR,
           },
+          headerTintColor: APPTEXT_COLOR,
+          headerTitleStyle: { color: APPTEXT_COLOR },
         }}
       />
     </Stack.Navigator>
