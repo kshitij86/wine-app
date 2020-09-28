@@ -8,7 +8,6 @@ import {
   Alert,
   ActivityIndicator,
   StatusBar,
-  Button,
 } from "react-native";
 import {
   FontAwesome,
@@ -38,6 +37,7 @@ export default class CameraView extends Component {
 
   /* ----- Handlers ----- */
 
+  // Handle permissions on start
   getPermissionAsync = async () => {
     const { status: cameraRollStatus } = await Permissions.askAsync(
       Permissions.CAMERA_ROLL
@@ -70,7 +70,7 @@ export default class CameraView extends Component {
     if (!this.camera) return;
 
     this.setState({ recording: true });
-    const record = await this.camera.recordAsync();
+    const record = await this.camera.recordAsync({});
     await FileSystem.makeDirectoryAsync(
       `${FileSystem.documentDirectory}videos/`,
       { intermediates: true }

@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 import CameraView from "./CameraView";
-import CarouselCard from "./CarouselCard";
+import VideoPreview from "./VideoPreview";
 
 const Stack = createStackNavigator();
 const StackNavigator = () => {
@@ -15,14 +15,13 @@ const StackNavigator = () => {
         options={{
           title: "zed",
           headerStyle: {
-            opacity: 0.5,
             backgroundColor: "transparent",
           },
         }}
       />
       <Stack.Screen
         name="videoPreview"
-        component={CarouselCard}
+        component={VideoPreview}
         options={{
           title: "Preview",
           headerStyle: {
