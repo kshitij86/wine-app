@@ -17,6 +17,7 @@ import {
   Foundation,
 } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 // TODO: Hide status bar in camera view
 // TODO: Make video record only 6 seconds and autoclose
@@ -38,27 +39,20 @@ export default class CameraView extends Component {
   /* ----- Handlers ----- */
 
   getPermissionAsync = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    const { aStatus } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-    const { cStatus } = await Permissions.askAsync(Permissions.CAMERA);
-    if (
-      status !== "granted" ||
-      aStatus !== "granted" ||
-      cStatus !== "granted"
-    ) {
-      console.log("Some permission not granted !");
-    }
-    this.setState({ hasPermission: status === "granted" });
-  };
-
-  // Switch front/back camera
-  handleCameraType = () => {
-    const { cameraType } = this.state;
+    const { status: cameraRollStatus } = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL
+    );
+    const { status: audioStatus } = await Permissions.askAsync(
+      Permissions.AUDIO_RECORDING
+    );
+    const { status: cameraStatus } = await Permissions.askAsync(
+      Permissions.CAMERA
+    );
     this.setState({
-      cameraType:
-        cameraType === Camera.Constants.Type.front
-          ? Camera.Constants.Type.back
-          : Camera.Constants.Type.front,
+      hasPermission:
+        cameraStatus === "granted" &&
+        audioStatus === "granted" &&
+        cameraRollStatus === "granted",
     });
   };
 
@@ -71,6 +65,39 @@ export default class CameraView extends Component {
       Alert.alert("zed", photo.uri);
     }
   };
+
+  startRecording = async () => {
+    if (!this.camera) return;
+
+    this.setState({ recording: true });
+    const record = await this.camera.recordAsync();
+    await FileSystem.makeDirectoryAsync(
+      `${FileSystem.documentDirectory}videos/`,
+      { intermediates: true }
+    );
+
+    await FileSystem.moveAsync({
+      from: record.uri,
+      to: `${FileSystem.documentDirectory}videos/6.mov`,
+    }).then(() => {
+      this.props.navigation.navigate("videoPreview", {
+        fileUri: `${FileSystem.documentDirectory}videos/6.mov`,
+      });
+    });
+  };
+
+  stopRecording = async () => {
+    if (!this.camera) return;
+
+    await this.camera.stopRecording();
+    this.setState({ recording: false });
+  };
+
+  toggleRecording() {
+    const { recording } = this.state;
+
+    return recording ? this.stopRecording() : this.startRecording();
+  }
 
   // Pick an image
   pickVideo = async () => {
@@ -162,18 +189,8 @@ export default class CameraView extends Component {
                   alignItems: "center",
                   backgroundColor: "transparent",
                 }}
-                onPress={async () => {
-                  if (!this.state.recording) {
-                    this.setState({ recording: true });
-                    this.video = await this.camera.recordAsync({
-                      quality: "1080p",
-                    });
-                  } else {
-                    this.setState({ recording: false });
-                    await this.camera.stopRecording();
-                    console.log(this.video);
-                    this.props.navigation.navigate("videoPreview");
-                  }
+                onPress={() => {
+                  this.toggleRecording();
                 }}
               >
                 {this.state.recording === true ? (
@@ -211,7 +228,12 @@ export default class CameraView extends Component {
                     backgroundColor: "transparent",
                   }}
                   onPress={() => {
-                    this.handleCameraType();
+                    this.setState({
+                      cameraType:
+                        this.state.cameraType === Camera.Constants.Type.front
+                          ? Camera.Constants.Type.back
+                          : Camera.Constants.Type.front,
+                    });
                   }}
                 >
                   <MaterialCommunityIcons
@@ -227,3 +249,15 @@ export default class CameraView extends Component {
     }
   }
 }
+
+/*if (!this.state.recording) {
+                    this.setState({ recording: true });
+                    this.video = await this.camera.recordAsync({
+                      quality: "1080p",
+                    });
+                  } else {
+                    this.setState({ recording: false });
+                    await this.camera.stopRecording();
+                    console.log(this.video);
+                    this.props.navigation.navigate("videoPreview");
+                  } */

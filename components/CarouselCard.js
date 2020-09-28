@@ -1,24 +1,14 @@
 import React from "react";
-import { View, StyleSheet, Dimensions, ImageBackground } from "react-native";
-
-const colors = ["red", "green", "yellow", "blue"];
+import { View, StyleSheet, Dimensions, Text } from "react-native";
 
 const deviceWidth = Dimensions.get("screen").width;
 const deviceHeight = Dimensions.get("screen").height;
 
-export default function CarouselCard(props) {
+export default function CarouselCard({ route, navigation }) {
+  const { fileUri } = route.params;
   return (
     <View style={styles.superView}>
-      <ImageBackground
-        resizeMethod={"auto"}
-        resizeMode={"cover"}
-        style={styles.cardImage}
-        transition={true}
-        source={{
-          uri:
-            "https://images.unsplash.com/photo-1600750605723-70a6b933107a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-        }}
-      ></ImageBackground>
+      <Text>{fileUri}</Text>
     </View>
   );
 }
