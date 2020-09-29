@@ -15,12 +15,11 @@ import {
   MaterialCommunityIcons,
   Foundation,
 } from "@expo/vector-icons";
+import CountDown from "react-native-countdown-component";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
-import { APPTHEME_COLOR } from "../assets/globals/styles";
-
-// TODO: Hide status bar in camera view
-// TODO: Make video record only 6 seconds and autoclose
+import { APPTEXT_COLOR, APPTHEME_COLOR } from "../globals/styles";
+import { deviceWidth, deviceHeight } from "../globals/constants";
 
 export default class CameraView extends Component {
   video = null;
@@ -66,8 +65,6 @@ export default class CameraView extends Component {
       Alert.alert("zed", photo.uri);
     }
   };
-
-  /*    return recording ? this.stopRecording() : this.startRecording(); */
 
   startRecording = async () => {
     if (!this.camera) return;
@@ -145,8 +142,25 @@ export default class CameraView extends Component {
               animating={this.state.loading}
               color="#fff"
             />
-            {/* Fucked up LottieView, remove*/}
-            {/* {this.state.recording === true ? <TimerAnim /> : null} */}
+            {this.state.recording ? (
+              <View
+                style={{
+                  paddingTop: deviceHeight * 0.15,
+                  paddingRight: deviceWidth * 0.3,
+                  paddingLeft: deviceWidth * 0.95,
+                  paddingBottom: deviceHeight * 0.85,
+                }}
+              >
+                <CountDown
+                  until={6}
+                  size={20}
+                  digitStyle={{ backgroundColor: APPTEXT_COLOR }}
+                  digitTxtStyle={{ color: APPTHEME_COLOR }}
+                  timeToShow={["S"]}
+                />
+              </View>
+            ) : null}
+
             <View
               opacity={0.5}
               style={{

@@ -12,7 +12,7 @@ export default function HeaderTransparentLogo() {
     >
       <Image
         style={{ width: 90, height: 150 }}
-        source={require("../assets/wine1.png")}
+        source={require("../assets/images/wine1.png")}
         resizeMode="contain"
       />
     </View>

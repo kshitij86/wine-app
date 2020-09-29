@@ -2,11 +2,18 @@
   "name": "zed",
   "displayName": "zed",
   "expo": {
-    "name": "zed",
-    "slug": "zed",
+    "name": "wine",
+    "assetBundlePatterns": ["**/*"],
+    "icon": "./assets/images/wine-ico.png",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "slug": "wine",
+    "ios": {
+      "bundleIdentifier": "com.wine.wine",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.wine.wine",
+      "versionCode": 1
+    }
   }
 }

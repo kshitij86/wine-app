@@ -1,17 +1,11 @@
 import React from "react";
-import { Dimensions } from "react-native";
 import { Video } from "expo-av";
-
-const deviceWidth = Dimensions.get("screen").width;
-const deviceHeight = Dimensions.get("screen").height;
+import { deviceHeight, deviceWidth } from "../globals/constants";
 
 export default function VideoPreview({ route }) {
   const { fileUri } = route.params;
   return (
     <Video
-      ref={(video) => {
-        this.video = video;
-      }}
       source={{ uri: fileUri }}
       rate={1.0}
       volume={1.0}
