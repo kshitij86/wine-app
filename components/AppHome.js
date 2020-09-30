@@ -1,5 +1,4 @@
 import React from "react";
-import { Alert, Button } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -8,8 +7,6 @@ import CameraView from "./CameraView";
 import VideoPreview from "./VideoPreview";
 import HeaderTransparentLogo from "./HeaderTransparentLogo";
 import RecordedWinesList from "./RecordedWinesList";
-import { genID } from "../globals/workers";
-import * as MediaLibrary from "expo-media-library";
 
 // TODO: Add save to gallery
 
@@ -22,15 +19,6 @@ const StackNavigator = () => {
         component={CameraView}
         options={({ navigation, route }) => ({
           headerTitle: () => <HeaderTransparentLogo />,
-          headerStyle: { backgroundColor: APPTHEME_COLOR },
-          // headerRight: () => (
-          //   <Button
-          //     title="wines"
-          //     onPress={() => {
-          //       navigation.navigate("recordedWines");
-          //     }}
-          //   />
-          // ),
         })}
       />
       <Stack.Screen
@@ -43,16 +31,6 @@ const StackNavigator = () => {
           },
           headerTintColor: APPTEXT_COLOR,
           headerTitleStyle: { color: APPTEXT_COLOR },
-          headerRight: () => (
-            <Button
-              title="save"
-              style={{ backgroundColor: APPTEXT_COLOR, color: APPTHEME_COLOR }}
-              onPress={async () => {
-                await MediaLibrary.saveToLibraryAsync(route.params.fileUri);
-                Alert.alert(APPNAME, "Done! Find this in your gallery!");
-              }}
-            />
-          ),
         })}
       />
       <Stack.Screen
