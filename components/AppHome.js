@@ -6,7 +6,7 @@ import { APPTHEME_COLOR, APPTEXT_COLOR, APPNAME } from "../globals/styles";
 import CameraView from "./CameraView";
 import VideoPreview from "./VideoPreview";
 import HeaderTransparentLogo from "./HeaderTransparentLogo";
-import RecordedWinesList from "./RecordedWinesList";
+import SavedVideos from "./SavedVideos";
 
 // TODO: Add save to gallery
 
@@ -19,6 +19,7 @@ const StackNavigator = () => {
         component={CameraView}
         options={({ navigation, route }) => ({
           headerTitle: () => <HeaderTransparentLogo />,
+          headerStyle: { backgroundColor: APPTHEME_COLOR },
         })}
       />
       <Stack.Screen
@@ -35,7 +36,7 @@ const StackNavigator = () => {
       />
       <Stack.Screen
         name="recordedWines"
-        component={RecordedWinesList}
+        component={SavedVideos}
         options={{
           title: "Your Wines",
           headerStyle: {
