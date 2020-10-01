@@ -8,7 +8,8 @@ import VideoPreview from "./VideoPreview";
 import HeaderTransparentLogo from "./HeaderTransparentLogo";
 import SavedVideos from "./SavedVideos";
 
-// TODO: Add save to gallery
+// TODO: Add modal on AppHome
+// Show recorded videos
 
 const Stack = createStackNavigator();
 const StackNavigator = () => {
@@ -32,6 +33,7 @@ const StackNavigator = () => {
           },
           headerTintColor: APPTEXT_COLOR,
           headerTitleStyle: { color: APPTEXT_COLOR },
+          gestureDirection: "vertical-inverted",
         })}
       />
       <Stack.Screen
