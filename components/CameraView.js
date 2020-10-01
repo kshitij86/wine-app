@@ -119,7 +119,7 @@ export default class CameraView extends Component {
     });
     this.setState({ loading: false });
     if (result.cancelled === false) {
-      this.props.navigation.navigation("videoPreview", {
+      this.props.navigation.navigate("videoPreview", {
         fileUri: result.uri,
       });
     } else {
