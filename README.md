@@ -1,19 +1,24 @@
-# zedPlay (to be renamed)
+# wine
 
-### Short video app, the react native way.
+#### The name is a play on the popular short video app Vine (R.I.P).
+_**wine**_ let's you record fun videos and share them with your friends.
+<br>
+![wine-icon](./assets/images/wine-ico.png)
 
-# Development Phase
-### Phase 1:
-- [x] Add video recording.
-- [x] Add video preview
-- [ ] ...
+### Short video app, the React Native way.
 
-### Phase 2:
-- [ ] UI enhancement
-- [ ] Additional functionalities
-- [ ] ...
+# Usage
+
+Clone this repo and set up the `npm` package. 
+Note that the app heavily depends on `expo-cli` and `expo` packages.
+
+An apk for Android devices will be made available soon, as a release.
 
 # Plans & Scope
+
 1. Add a dedicated backend (video hosting + auth + related)
-2. Move up to a release build
-3. ...
+2. Eject from `expo` for good
+3. Move up to a release build
+4. Code clean-up (big time)
+
+## Contributions are welcome, if you like the idea, don't forget to star the repo.
