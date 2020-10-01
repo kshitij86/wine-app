@@ -19,6 +19,9 @@ const StackNavigator = () => {
         name="cameraView"
         component={CameraView}
         options={({ navigation, route }) => ({
+          headerTitleContainerStyle: {
+            alignContent: "flex-start",
+          },
           headerTitle: () => <HeaderTransparentLogo />,
           headerStyle: { backgroundColor: APPTHEME_COLOR },
         })}
@@ -35,18 +38,6 @@ const StackNavigator = () => {
           headerTitleStyle: { color: APPTEXT_COLOR },
           gestureDirection: "vertical-inverted",
         })}
-      />
-      <Stack.Screen
-        name="recordedWines"
-        component={SavedVideos}
-        options={{
-          title: "Your Wines",
-          headerStyle: {
-            backgroundColor: APPTHEME_COLOR,
-          },
-          headerTintColor: APPTEXT_COLOR,
-          headerTitleStyle: { color: APPTEXT_COLOR },
-        }}
       />
     </Stack.Navigator>
   );

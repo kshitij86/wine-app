@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import * as FileSystem from "expo-file-system";
 
 export default class RecordedWinesList extends Component {
-  state = { fileList: {} };
+  state = { fileList: {}, fname: "" };
 
   async componentDidMount() {
     await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}videos`)
@@ -14,16 +14,17 @@ export default class RecordedWinesList extends Component {
       })
       .catch((err) => console.log(err));
 
+    this.state.fname = Object.prototype.toString.call(this.state.fileList[0]);
     console.log(Object.prototype.toString.call(this.state.fileList[0]));
   }
 
   render() {
     return (
-      <View>
+      <View style={{ backgroundColor: "black" }}>
         {this.state.fileList === null ? (
           <Text>fail</Text>
         ) : (
-          <Text>success</Text>
+          <Text>{this.state.fname}</Text>
         )}
       </View>
     );

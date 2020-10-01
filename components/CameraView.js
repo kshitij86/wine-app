@@ -8,6 +8,7 @@ import {
   Alert,
   ActivityIndicator,
   StatusBar,
+  ToastAndroid,
 } from "react-native";
 import {
   FontAwesome,
@@ -30,6 +31,7 @@ export default class CameraView extends Component {
     loading: false,
     recording: false,
     recordDone: false,
+    modalVisible: false,
   };
 
   async componentDidMount() {
@@ -105,15 +107,23 @@ export default class CameraView extends Component {
     }
   }
 
-  // Pick an image
+  showNullToast = () => {
+    ToastAndroid.show("Nothing selected to share", ToastAndroid.SHORT);
+  };
+
+  // Pick an video to share
   pickVideo = async () => {
     this.setState({ loading: true });
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
     });
     this.setState({ loading: false });
-    if (result.uri !== "") {
-      Alert.alert("zed", result.uri);
+    if (result.cancelled === false) {
+      this.props.navigation.navigation("videoPreview", {
+        fileUri: result.uri,
+      });
+    } else {
+      this.showNullToast();
     }
   };
 
