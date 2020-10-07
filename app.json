@@ -3,8 +3,15 @@
   "displayName": "zed",
   "expo": {
     "name": "wine",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "icon": "./assets/images/wine-ico.png",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "backgroundColor": "#1CC625",
+      "resizeMode": "contain"
+    },
     "version": "1.0.0",
     "slug": "wine",
     "ios": {

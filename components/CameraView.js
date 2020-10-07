@@ -19,8 +19,7 @@ import {
 import CountDown from "react-native-countdown-component";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
-import { APPTEXT_COLOR, APPTHEME_COLOR } from "../globals/styles";
-import { deviceWidth, deviceHeight } from "../globals/constants";
+import { APPTEXT_COLOR, APPTHEME_COLOR, styles } from "../globals/styles";
 import { genID } from "../globals/workers";
 
 export default class CameraView extends Component {
@@ -149,25 +148,14 @@ export default class CameraView extends Component {
             }}
           >
             <ActivityIndicator
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignContent: "center",
-              }}
+              style={styles.activityIndicator}
               size={50}
               animating={this.state.loading}
-              color="#fff"
+              color={APPTEXT_COLOR}
             />
             {this.state.recording ? (
               <View
-                style={{
-                  paddingTop: deviceHeight * 0.15,
-                  paddingRight: deviceWidth * 0.3,
-                  paddingLeft: deviceWidth * 0.95,
-                  paddingBottom: deviceHeight * 0.85,
-                  width: 20,
-                  height: 20,
-                }}
+                style={styles.timer}
               >
                 <CountDown
                   until={6}
@@ -178,85 +166,47 @@ export default class CameraView extends Component {
                 />
               </View>
             ) : (
-              <View
-                opacity={0.5}
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  margin: 20,
-                  backgroundColor: "transparent",
-                }}
-              >
-                {this.state.recording ? (
-                  <TouchableOpacity
-                    style={{
-                      alignSelf: "flex-end",
-                      alignItems: "center",
-                      backgroundColor: "transparent",
-                    }}
-                    disabled={true}
-                  >
-                    <Ionicons
-                      name="ios-photos"
-                      style={{ color: "#fff", fontSize: 40 }}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    style={{
-                      alignSelf: "flex-end",
-                      alignItems: "center",
-                      backgroundColor: "transparent",
-                    }}
-                    onPress={() => {
-                      this.pickVideo();
-                    }}
-                  >
-                    <Ionicons
-                      name="ios-photos"
-                      style={{ color: "#fff", fontSize: 40 }}
-                    />
-                  </TouchableOpacity>
-                )}
-                <TouchableOpacity
+                <View
+                  opacity={0.5}
                   style={{
-                    alignSelf: "flex-end",
-                    alignItems: "center",
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    margin: 20,
                     backgroundColor: "transparent",
                   }}
-                  onPress={() => {
-                    this.toggleRecording();
-                  }}
                 >
-                  {this.state.recording === true ? (
-                    <FontAwesome
-                      name="stop"
-                      style={{ color: "#fff", fontSize: 40 }}
-                    />
+                  {this.state.recording ? (
+                    <TouchableOpacity
+                      style={{
+                        alignSelf: "flex-end",
+                        alignItems: "center",
+                        backgroundColor: "transparent",
+                      }}
+                      disabled={true}
+                    >
+                      <Ionicons
+                        name="ios-photos"
+                        style={{ color: { APPTEXT_COLOR }, fontSize: 40 }}
+                      />
+                    </TouchableOpacity>
                   ) : (
-                    <Foundation
-                      name="record"
-                      style={{ color: "#fff", fontSize: 60 }}
-                    />
-                  )}
-                </TouchableOpacity>
-
-                {this.state.recording ? (
-                  <TouchableOpacity
-                    style={{
-                      alignSelf: "flex-end",
-                      alignItems: "center",
-                      backgroundColor: "transparent",
-                    }}
-                    disabled={true}
-                  >
-                    <MaterialCommunityIcons
-                      name="camera-switch"
-                      style={{ color: "#fff", fontSize: 40 }}
-                    />
-                  </TouchableOpacity>
-                ) : (
+                      <TouchableOpacity
+                        style={{
+                          alignSelf: "flex-end",
+                          alignItems: "center",
+                          backgroundColor: "transparent",
+                        }}
+                        onPress={() => {
+                          this.pickVideo();
+                        }}
+                      >
+                        <Ionicons
+                          name="ios-photos"
+                          style={{ color: "#fff", fontSize: 40 }}
+                        />
+                      </TouchableOpacity>
+                    )}
                   <TouchableOpacity
                     style={{
                       alignSelf: "flex-end",
@@ -264,37 +214,63 @@ export default class CameraView extends Component {
                       backgroundColor: "transparent",
                     }}
                     onPress={() => {
-                      this.setState({
-                        cameraType:
-                          this.state.cameraType === Camera.Constants.Type.front
-                            ? Camera.Constants.Type.back
-                            : Camera.Constants.Type.front,
-                      });
+                      this.toggleRecording();
                     }}
                   >
-                    <MaterialCommunityIcons
-                      name="camera-switch"
-                      style={{ color: "#fff", fontSize: 40 }}
-                    />
+                    {this.state.recording === true ? (
+                      <FontAwesome
+                        name="stop"
+                        style={{ color: "#fff", fontSize: 40 }}
+                      />
+                    ) : (
+                        <Foundation
+                          name="record"
+                          style={{ color: "#fff", fontSize: 60 }}
+                        />
+                      )}
                   </TouchableOpacity>
-                )}
-              </View>
-            )}
+
+                  {this.state.recording ? (
+                    <TouchableOpacity
+                      style={{
+                        alignSelf: "flex-end",
+                        alignItems: "center",
+                        backgroundColor: "transparent",
+                      }}
+                      disabled={true}
+                    >
+                      <MaterialCommunityIcons
+                        name="camera-switch"
+                        style={{ color: "#fff", fontSize: 40 }}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                      <TouchableOpacity
+                        style={{
+                          alignSelf: "flex-end",
+                          alignItems: "center",
+                          backgroundColor: "transparent",
+                        }}
+                        onPress={() => {
+                          this.setState({
+                            cameraType:
+                              this.state.cameraType === Camera.Constants.Type.front
+                                ? Camera.Constants.Type.back
+                                : Camera.Constants.Type.front,
+                          });
+                        }}
+                      >
+                        <MaterialCommunityIcons
+                          name="camera-switch"
+                          style={{ color: "#fff", fontSize: 40 }}
+                        />
+                      </TouchableOpacity>
+                    )}
+                </View>
+              )}
           </Camera>
         </View>
       );
     }
   }
-}
-
-/*if (!this.state.recording) {
-                    this.setState({ recording: true });
-                    this.video = await this.camera.recordAsync({
-                      quality: "1080p",
-                    });
-                  } else {
-                    this.setState({ recording: false });
-                    await this.camera.stopRecording();
-                    console.log(this.video);
-                    this.props.navigation.navigate("videoPreview");
-                  } */
+};
