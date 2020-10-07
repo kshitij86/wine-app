@@ -5,6 +5,11 @@
     "name": "wine",
     "assetBundlePatterns": ["**/*"],
     "icon": "./assets/images/wine-ico.png",
+    "splash": {
+      "image": "./assets/images/wine-splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "version": "1.0.0",
     "slug": "wine",
     "ios": {
