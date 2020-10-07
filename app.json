@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/images/wine-splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#1CC625"
     },
     "version": "1.0.0",
     "slug": "wine",
