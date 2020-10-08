@@ -21,6 +21,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { APPTEXT_COLOR, APPTHEME_COLOR, styles } from "../globals/styles";
 import { genID } from "../globals/workers";
+import NoPermissions from "./NoPermissions";
 
 export default class CameraView extends Component {
   video = null;
@@ -131,7 +132,7 @@ export default class CameraView extends Component {
     if (hasPermission === null) {
       return <View />;
     } else if (hasPermission === false) {
-      return <Text>No access to camera</Text>;
+      return <NoPermissions />;
     } else {
       return (
         <View style={{ flex: 1 }}>

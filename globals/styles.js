@@ -14,6 +14,17 @@ const styles = StyleSheet.create({
     paddingBottom: deviceHeight * 0.85,
     width: 20,
     height: 20,
+  },
+  noPermissions: {
+    flex: 1,
+    backgroundColor: "#FFF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noPermissionsText: {
+    color: "#7f7f7f",
+    fontSize: 25,
+    textAlign: "center"
   }
 })
 
