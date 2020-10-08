@@ -2,7 +2,7 @@
 
 #### The name is a play on the popular short video app Vine (R.I.P).
 _**wine**_ let's you record fun videos and share them with your friends.
-<br>
+<br><br><br>
 ![wine-icon](./assets/images/wine-ico.png)
 
 ### Short video app, the React Native way.
