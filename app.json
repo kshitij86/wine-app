@@ -21,6 +21,11 @@
     "android": {
       "package": "com.wine.wine",
       "versionCode": 1
+    },
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "backgroundColor": "#1CC625",
+      "resizeMode": "contain"
     }
   }
 }
