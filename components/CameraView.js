@@ -9,19 +9,20 @@ import {
   ActivityIndicator,
   StatusBar,
   ToastAndroid,
+  Button
 } from "react-native";
 import {
   FontAwesome,
   Ionicons,
   MaterialCommunityIcons,
   Foundation,
+  Feather
 } from "@expo/vector-icons";
 import CountDown from "react-native-countdown-component";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { APPTEXT_COLOR, APPTHEME_COLOR, styles } from "../globals/styles";
 import { genID } from "../globals/workers";
-import NoPermissions from "./NoPermissions";
 
 export default class CameraView extends Component {
   video = null;
@@ -132,7 +133,15 @@ export default class CameraView extends Component {
     if (hasPermission === null) {
       return <View />;
     } else if (hasPermission === false) {
-      return <NoPermissions />;
+      return (
+        <View style={styles.noPermissions}>
+          <Feather name="camera-off" size={80} color="#7f7f7f" style={{ position: "absolute", top: 100 }} />
+          <Text style={styles.noPermissionsText}>oh snap!</Text>
+          <Text style={styles.noPermissionsText}>wine needs those permissions to work</Text>
+          <TouchableOpacity style={{ position: "absolute", bottom: 150 }} onPress={() => this.getPermissionAsync()} >
+            <Text style={styles.grantPermission}>grant access</Text>
+          </TouchableOpacity>
+        </View >);
     } else {
       return (
         <View style={{ flex: 1 }}>

@@ -25,6 +25,10 @@ const styles = StyleSheet.create({
     color: "#7f7f7f",
     fontSize: 25,
     textAlign: "center"
+  },
+  grantPermission: {
+    color: "#1CC625",
+    fontSize: 20
   }
 })
 
